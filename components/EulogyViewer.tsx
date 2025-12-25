@@ -138,12 +138,12 @@ export default function PDFViewer() {
       {/* Main Content - PDF Viewer */}
       <main
         className={`${
-          isFullscreen ? "h-screen pt-0" : " mx-auto px-4 bg-gray-950 h-[90vh]"
+          isFullscreen ? "h-screen pt-0" : " mx-auto px-1 bg-gray-950 h-screen"
         }`}
       >
         <div
           ref={pdfContainerRef}
-          className={`bg-white rounded-xl shadow-xl overflow-hidden border h-full border-gray-300 ${
+          className={`bg-white rounded-xl shadow-xl overflow-hidden border w-full h-full border-gray-300 ${
             isFullscreen ? "h-full rounded-none border-0" : ""
           }`}
         >
@@ -197,7 +197,7 @@ export default function PDFViewer() {
           {/* Mobile Download Section (Replaces PDF on mobile) */}
           {isMobile && !isFullscreen ? (
             <div className="h-full flex flex-col items-center justify-center bg-linear-to-b from-blue-50 to-white p-6">
-              <div className="max-w-[98%] w-full bg-white rounded-md shadow-2xl p-8 border border-gray-200">
+              <div className="w-full bg-white rounded-md shadow-2xl p-8 border border-gray-200">
                 {/* Header */}
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
@@ -256,7 +256,7 @@ export default function PDFViewer() {
                     </>
                   ) : (
                     <>
-                      <Download className="size-6" />
+                      {" "}
                       <span className="text-sm max-sm:text-xs">
                         🕯️Download Eulogy 🕊️
                       </span>
