@@ -196,7 +196,7 @@ export default function PDFViewer() {
 
           {/* Mobile Download Section (Replaces PDF on mobile) */}
           {isMobile && !isFullscreen ? (
-            <div className="h-full flex flex-col items-center justify-center bg-linear-to-b from-blue-50 to-white p-6">
+            <div className="h-full flex flex-col items-center justify-center bg-linear-to-b from-blue-50 to-white p-2 w-full">
               <div className="w-full bg-white rounded-md shadow-2xl p-8 border border-gray-200">
                 {/* Header */}
                 <div className="text-center mb-8">
