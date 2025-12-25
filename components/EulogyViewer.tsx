@@ -8,6 +8,7 @@ export default function PDFViewer() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [isDownloading, setIsDownloading] = useState(false);
   const pdfContainerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
 
@@ -58,14 +59,27 @@ export default function PDFViewer() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollTop, isFullscreen]);
 
-  const handleDownloadPDF = () => {
-    const pdfUrl = "/EULOGY-MAMA-HELIDA.pdf";
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.download = "Eulogy-Mama-Helida-Were-Oduor.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadPDF = async () => {
+    setIsDownloading(true);
+
+    try {
+      const pdfUrl = "/MAMA_HELIDA_WERE_EULOGY.pdf";
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = "Eulogy-Mama-Helida-Were-Oduor.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Open the PDF in a new tab after a short delay
+      setTimeout(() => {
+        window.open(pdfUrl, "_blank");
+        setIsDownloading(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      setIsDownloading(false);
+    }
   };
 
   const toggleFullscreen = () => {
@@ -89,11 +103,24 @@ export default function PDFViewer() {
             <div className="flex flex-col gap-3 max-sm:flex-row max-sm:gap-4">
               <button
                 onClick={handleDownloadPDF}
-                className="flex items-center justify-center gap-2 bg-linear-to-r from-yellow-500 to-yellow-600 text-white font-semibold px-4 py-2 rounded-lg shadow-lg transition-all duration-300 hover:from-yellow-600 hover:to-yellow-700 active:scale-95"
+                disabled={isDownloading}
+                className="flex items-center justify-center gap-2 bg-linear-to-r from-yellow-500 to-yellow-600 text-white font-semibold px-4 py-2 rounded-lg shadow-lg transition-all duration-300 hover:from-yellow-600 hover:to-yellow-700 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <Download size={18} />
-                <span className="text-sm max-sm:hidden">Download</span>
-                <span className="sm:hidden text-sm">DL</span>
+                {isDownloading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span className="text-sm max-sm:hidden">
+                      Downloading...
+                    </span>
+                    <span className="sm:hidden text-sm">DL...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download size={18} />
+                    <span className="text-sm max-sm:hidden">Download</span>
+                    <span className="sm:hidden text-sm">DL</span>
+                  </>
+                )}
               </button>
               <button
                 onClick={exitFullscreen}
@@ -130,10 +157,14 @@ export default function PDFViewer() {
                 Eulogy
               </span>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="sm:hidden font-mono font-black uppercase">
+              Rest in Eternal Peace Shosh
+            </div>
+            <div className="flex items-center gap-4 max-sm:hidden">
               <button
                 onClick={handleDownloadPDF}
-                className="flex cursor-pointer justify-center items-center gap-2 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95"
+                disabled={isDownloading}
+                className="flex cursor-pointer justify-center items-center gap-2 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Download className="size-4" />
                 <span className="max-sm:hidden">Download</span>
@@ -163,14 +194,88 @@ export default function PDFViewer() {
             </div>
           </div>
 
-          {/* PDF Display Area */}
-          <div className="relative h-full">
-            <iframe
-              src="/EULOGY-MAMA-HELIDA.pdf"
-              className="w-full h-full"
-              title="Eulogy PDF Viewer"
-            />
-          </div>
+          {/* Mobile Download Section (Replaces PDF on mobile) */}
+          {isMobile && !isFullscreen ? (
+            <div className="h-full flex flex-col items-center justify-center bg-linear-to-b from-blue-50 to-white p-6">
+              <div className="max-w-md w-full bg-white rounded-md shadow-2xl p-8 border border-gray-200">
+                {/* Header */}
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
+                    <Download className="size-8 text-blue-600" />
+                  </div>
+                  <h1 className="text-2xl font-bold text-gray-800 mb-2">
+                    Eulogy Download
+                  </h1>
+                  <p className="text-gray-600">
+                    Download the eulogy for Mama Helida Were Oduor
+                  </p>
+                </div>
+
+                {/* Details Card */}
+                <div className="bg-gray-50 rounded-md p-5 mb-8 border border-gray-200">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600 font-medium">Title:</span>
+                      <span className="text-gray-800 font-semibold">
+                        Eulogy
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600 font-medium">Name:</span>
+                      <span className="text-gray-800 font-semibold text-sm text-right">
+                        Mama Helida Were Oduor
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600 font-medium">Years:</span>
+                      <span className="text-gray-800 font-semibold text-sm">
+                        1936 - 2025
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600 font-medium">Format:</span>
+                      <span className="text-gray-800 font-semibold text-sm">
+                        PDF
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Download Button */}
+                <button
+                  onClick={handleDownloadPDF}
+                  disabled={isDownloading}
+                  className="w-full flex items-center justify-center gap-3 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6  rounded-md shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {isDownloading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                      <span className="text-sm">Downloading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="size-6" />
+                      <span className="text-sm">🕯️Download Eulogy 🕊️</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Note */}
+                <p className="text-center text-gray-500 text-sm mt-6">
+                  The PDF will automatically open after download
+                </p>
+              </div>
+            </div>
+          ) : (
+            /* PDF Display Area (Desktop & Fullscreen only) */
+            <div className="relative h-full">
+              <iframe
+                src="/MAMA_HELIDA_WERE_EULOGY.pdf"
+                className="w-full h-full"
+                title="Eulogy PDF Viewer"
+              />
+            </div>
+          )}
         </div>
 
         {/* Floating Fullscreen Button for when header is hidden */}
