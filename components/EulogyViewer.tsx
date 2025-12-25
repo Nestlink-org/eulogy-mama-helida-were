@@ -268,7 +268,7 @@ export default function PDFViewer() {
             </div>
           ) : (
             /* PDF Display Area (Desktop & Fullscreen only) */
-            <div className="relative h-full">
+            <div className="relative h-full max-sm:hidden">
               <iframe
                 src="/MAMA_HELIDA_WERE_EULOGY.pdf"
                 className="w-full h-full"
