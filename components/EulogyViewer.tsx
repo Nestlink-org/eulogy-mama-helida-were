@@ -197,7 +197,7 @@ export default function PDFViewer() {
           {/* Mobile Download Section (Replaces PDF on mobile) */}
           {isMobile && !isFullscreen ? (
             <div className="h-full flex flex-col items-center justify-center bg-linear-to-b from-blue-50 to-white p-6">
-              <div className="max-w-md w-full bg-white rounded-md shadow-2xl p-8 border border-gray-200">
+              <div className="max-w-[98%] w-full bg-white rounded-md shadow-2xl p-8 border border-gray-200">
                 {/* Header */}
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
@@ -245,23 +245,27 @@ export default function PDFViewer() {
                 <button
                   onClick={handleDownloadPDF}
                   disabled={isDownloading}
-                  className="w-full flex items-center justify-center gap-3 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6  rounded-md shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 max-sm:gap-1 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 px-6  rounded-md shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isDownloading ? (
                     <>
                       <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                      <span className="text-sm">Downloading...</span>
+                      <span className="text-sm max-sm:text-xs">
+                        Downloading...
+                      </span>
                     </>
                   ) : (
                     <>
                       <Download className="size-6" />
-                      <span className="text-sm">🕯️Download Eulogy 🕊️</span>
+                      <span className="text-sm max-sm:text-xs">
+                        🕯️Download Eulogy 🕊️
+                      </span>
                     </>
                   )}
                 </button>
 
                 {/* Note */}
-                <p className="text-center text-gray-500 text-sm mt-6">
+                <p className="text-center text-gray-500 text-sm mt-6 max-sm:text-xs">
                   The PDF will automatically open after download
                 </p>
               </div>
